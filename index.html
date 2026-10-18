@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тест рівня Microsoft Excel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  /* =========================================================
+     НАЛАШТУВАННЯ: вставте сюди URL веб-застосунку Apps Script
+     ========================================================= */
+  window.SURVEY_CONFIG = {
+    endpoint: "https://script.google.com/macros/s/AKfycbzNQbXLfVbf4rFpfrhhQ_kQcQpZbuhio2QBHywWYqOB3IVMWI5fmbKGvacGnLvh6UuXLg/exec",
+    formId: "tkhchu-excel-level-test-2026"
+  };
+</script>
+<style>
+  :root {
+    --purple-50: #F5EEFF; --purple-100: #E8D1FF;
+    --purple-500: #9464FF; --purple-600: #8D59FF; --purple-700: #7644E0;
+    --yellow-100: #F4F19C; --mint-100: #E3FEC9; --sky-100: #C8F0FF; --lilac-100: #E8D1FF;
+    --ink-900: #212121; --ink-700: #43434D; --ink-500: #6B6B76; --ink-300: #9A9AA5; --ink-200: #D7D7E0;
+    --surface-tint: #F8F8FB; --white: #FFFFFF; --error: #D93A3A;
+    --radius-md: 12px; --radius-lg: 16px; --radius-xl: 20px; --radius-2xl: 24px; --radius-pill: 999px;
+    --shadow-xs: 0 1px 2px rgba(23,24,60,.04);
+    --shadow-focus: 0 0 0 4px rgba(141,89,255,.25);
+    --ease: cubic-bezier(.4,0,.2,1);
+    --font-sans: "Golos Text", -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--white); color: var(--ink-900);
+    font-family: var(--font-sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  [hidden] { display: none !important; }
+
+  .progress { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 50; background: var(--ink-200); }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--purple-600); transition: width .25s var(--ease); }
+
+  .hero { padding: 56px 16px 48px; }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  .logo { display: block; height: 36px; width: auto; margin: 0 0 48px; }
+  .tag {
+    display: inline-block; font-size: 13px; font-weight: 500; line-height: 1.4;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    background: var(--lilac-100); margin-bottom: 24px;
+  }
+  h1 {
+    font-size: clamp(34px, 6vw, 56px); font-weight: 800; line-height: 1.12; letter-spacing: -.01em;
+    margin: 0 0 20px; max-width: 760px; text-wrap: balance;
+  }
+  .accent { color: var(--purple-600); }
+  .lead { color: var(--ink-500); font-size: 18px; line-height: 1.5; max-width: 660px; margin: 0 0 32px; text-wrap: pretty; }
+  .facts { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+  .fact { border-radius: var(--radius-xl); padding: 16px 20px; min-width: 150px; background: var(--lilac-100); }
+  .fact:nth-child(4n+2) { background: var(--yellow-100); }
+  .fact:nth-child(4n+3) { background: var(--mint-100); }
+  .fact:nth-child(4n+4) { background: var(--sky-100); }
+  .fact b { display: block; font-size: 28px; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; }
+  .fact span { font-size: 14px; color: var(--ink-700); }
+
+  main { padding: 0 16px 96px; }
+  .section { background: var(--surface-tint); border-radius: var(--radius-2xl); padding: 48px; margin-bottom: 24px; }
+  .section-head { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .section-num {
+    font-size: 14px; font-weight: 700; color: var(--white); background: var(--ink-900);
+    border-radius: var(--radius-pill); padding: 4px 12px; flex: none; line-height: 1.3;
+  }
+  h2 { font-size: clamp(24px, 3.4vw, 36px); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin: 0; text-wrap: balance; }
+  h3 { font-size: 20px; font-weight: 700; margin: 0 0 8px; }
+  .section-desc { color: var(--ink-500); margin: 8px 0; text-wrap: pretty; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .card { background: var(--white); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-xs); }
+  .card ul { margin: 8px 0 0; padding-left: 20px; }
+  .card li { margin: 4px 0; }
+
+  .lessons { display: grid; gap: 8px; margin-top: 24px; counter-reset: l; }
+  .lesson {
+    display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start;
+    background: var(--white); border-radius: var(--radius-lg); padding: 16px 20px; box-shadow: var(--shadow-xs);
+  }
+  .lesson .no {
+    width: 36px; height: 36px; border-radius: var(--radius-pill); display: grid; place-items: center;
+    background: var(--purple-50); color: var(--purple-700); font-weight: 700; font-size: 15px;
+  }
+  .lesson b { display: block; font-size: 16px; }
+  .lesson span { font-size: 14px; color: var(--ink-500); }
+
+  .q { padding: 24px 0 4px; border-top: 1px solid var(--ink-200); margin-top: 20px; }
+  .section-desc + .q, .section-head + .q { border-top: none; margin-top: 4px; }
+  .q-title { font-weight: 600; font-size: 18px; line-height: 1.45; margin: 0 0 14px; }
+  .q-title .n { color: var(--purple-600); font-weight: 600; margin-right: 8px; }
+  .q-hint { font-size: 14px; color: var(--ink-500); margin: -8px 0 14px; }
+  code {
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .92em;
+    background: var(--purple-50); color: var(--ink-900); padding: 1px 6px; border-radius: 6px; white-space: nowrap;
+  }
+  .req { color: var(--purple-600); margin-left: 4px; }
+
+  .opts { display: grid; gap: 8px; }
+  .opt {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px; border: 1px solid transparent; border-radius: var(--radius-lg);
+    background: var(--white); box-shadow: var(--shadow-xs); cursor: pointer;
+    transition: border-color .12s var(--ease), background .12s var(--ease);
+  }
+  .opt:hover { border-color: var(--ink-200); }
+  .opt:has(input:checked) { border-color: var(--purple-600); background: var(--purple-50); }
+  .opt input { accent-color: var(--purple-600); width: 18px; height: 18px; margin: 2px 0 0; flex: none; }
+  .opt.idk { color: var(--ink-500); }
+  .opt-body { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .opt-body code { white-space: normal; }
+
+  label.field { display: block; font-weight: 600; margin: 0 0 6px; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  input[type=text] {
+    width: 100%; font: inherit; color: var(--ink-900);
+    background: var(--white); border: 1px solid var(--ink-200); border-radius: var(--radius-md);
+    padding: 12px 16px; outline: none; transition: border-color .12s var(--ease), box-shadow .12s var(--ease);
+  }
+  input[type=text]:focus { border-color: var(--purple-600); box-shadow: var(--shadow-focus); }
+  input::placeholder { color: var(--ink-300); }
+
+  .invalid .q-title, .invalid label.field { color: var(--error); }
+  .invalid input[type=text] { border-color: var(--error); }
+  .err-msg { color: var(--error); font-size: 14px; margin-top: 8px; display: none; }
+  .invalid .err-msg { display: block; }
+
+  .submit-card {
+    background: var(--purple-600); color: var(--white); border-radius: var(--radius-2xl);
+    padding: 48px; position: relative; overflow: hidden;
+  }
+  .submit-card h2 { margin-bottom: 8px; }
+  .submit-card p { margin: 0 0 24px; max-width: 560px; }
+  .submit-card .fields label.field { color: var(--white); }
+  .submit-card .invalid label.field, .submit-card .err-msg { color: #FFE3E3; }
+
+  .nav { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--ink-900); color: var(--white); font: inherit; font-weight: 600; font-size: 16px; line-height: 1;
+    border: none; border-radius: var(--radius-pill); padding: 18px 32px; cursor: pointer; text-decoration: none;
+    transition: background .2s var(--ease), opacity .2s var(--ease);
+  }
+  .btn:hover { background: #000; }
+  .btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .btn.ghost { background: transparent; color: var(--ink-900); border: 1px solid var(--ink-200); }
+  .btn.ghost:hover { border-color: var(--ink-900); background: transparent; }
+  .step-info { color: var(--ink-500); font-size: 14px; margin-left: auto; }
+  .form-error { color: var(--error); margin-top: 16px; font-size: 15px; display: none; }
+  .submit-card .form-error { color: var(--white); }
+
+  .done { text-align: left; }
+  .done .section { padding: 56px 48px; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 40px 16px 32px; }
+    .logo { margin-bottom: 32px; }
+    .section, .submit-card { padding: 28px 20px; border-radius: var(--radius-xl); }
+    .two-col, .fields { grid-template-columns: 1fr; }
+    .fact { min-width: calc(50% - 6px); flex: 1; }
+    .q-title { font-size: 17px; }
+    .step-info { margin-left: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" hidden><span id="bar"></span></div>
+
+<header class="hero">
+  <div class="wrap">
+    <svg class="logo" viewBox="0 0 200 57" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DAN.IT Education">
+      <path d="M56.3397 56.0376H51.4883V47.3594H56.3397V48.3603H52.6541V51.045H56.1983V52.0341H52.6541V55.0249H56.3397V56.0376Z" fill="#3F404B"/>
+      <path d="M68.42 51.6005C68.42 52.0126 68.3847 52.4129 68.3258 52.7897C68.267 53.1665 68.161 53.5198 68.0197 53.8495C67.8784 54.1792 67.7017 54.4736 67.478 54.7444C67.2543 55.0152 66.9834 55.239 66.6655 55.4274C66.3476 55.6158 65.9708 55.7688 65.5469 55.863C65.123 55.969 64.6402 56.0161 64.0986 56.0161H62.2734V47.3379H64.4754C65.8059 47.3379 66.795 47.6912 67.4544 48.3859C68.1138 49.0806 68.4318 50.1521 68.4318 51.5769L68.42 51.6005ZM67.1954 51.6829C67.1954 51.0706 67.1365 50.5525 67.0305 50.1286C66.9128 49.7047 66.7479 49.3632 66.5124 49.1041C66.2769 48.8451 65.9943 48.6567 65.6411 48.539C65.2878 48.4212 64.8875 48.3623 64.4165 48.3623H63.4156V55.0152H64.287C66.2299 55.0152 67.1954 53.9084 67.1954 51.6947V51.6829Z" fill="#3F404B"/>
+      <path d="M79.9386 53.0113C79.9386 53.4824 79.8679 53.918 79.7384 54.3066C79.6089 54.6952 79.4087 55.0249 79.1497 55.2957C78.8906 55.5665 78.5844 55.7785 78.2076 55.9316C77.8426 56.0846 77.4069 56.1553 76.9242 56.1553C76.3943 56.1553 75.9468 56.0846 75.57 55.9433C75.205 55.802 74.8989 55.6019 74.6634 55.3428C74.4279 55.0838 74.263 54.7776 74.157 54.4126C74.051 54.0476 73.9922 53.6472 73.9922 53.1998V47.3711H75.1579V53.1173C75.1579 53.4588 75.1933 53.7532 75.2521 54.0122C75.311 54.2713 75.4169 54.4832 75.5582 54.6598C75.6995 54.8365 75.888 54.966 76.1117 55.0484C76.3472 55.1309 76.618 55.178 76.9477 55.178C77.56 55.178 78.0192 55.0013 78.3136 54.6363C78.608 54.2713 78.7493 53.765 78.7493 53.1056V47.3829H79.915V53.0349L79.9386 53.0113Z" fill="#3F404B"/>
+      <path d="M91.4539 55.7142C90.771 56.0086 90.0528 56.1499 89.3109 56.1499C88.1099 56.1499 87.1796 55.7849 86.532 55.0548C85.8843 54.3248 85.5664 53.2414 85.5664 51.8049C85.5664 51.1102 85.6607 50.4861 85.8373 49.9209C86.0139 49.3557 86.2729 48.8847 86.6026 48.4961C86.9323 48.1075 87.3327 47.8014 87.8037 47.5894C88.2747 47.3775 88.8046 47.2715 89.3816 47.2715C89.7819 47.2715 90.147 47.3068 90.4884 47.3775C90.8299 47.4481 91.1596 47.5541 91.4657 47.6954V48.8611C91.1596 48.6845 90.8299 48.555 90.5002 48.4608C90.1705 48.3666 89.8054 48.3195 89.4169 48.3195C89.0283 48.3195 88.6515 48.4019 88.3336 48.5432C88.0157 48.6963 87.733 48.92 87.5093 49.2026C87.2856 49.497 87.109 49.8502 86.9912 50.2624C86.8735 50.6745 86.8028 51.1572 86.8028 51.6871C86.8028 52.8175 87.0265 53.6536 87.474 54.2305C87.9214 54.7957 88.5809 55.0901 89.4404 55.0901C89.8055 55.0901 90.1587 55.043 90.4884 54.9606C90.8181 54.8782 91.1478 54.7486 91.4539 54.5956V55.7142Z" fill="#3F404B"/>
+      <path d="M103.991 56.0376H102.732L102.143 54.1418H98.5867L97.9862 56.0376H96.7852L99.6229 47.3594H101.213L104.003 56.0376H103.991ZM101.801 53.0938L100.365 48.4544L98.9164 53.0938H101.801Z" fill="#3F404B"/>
+      <path d="M114.251 48.372H111.731V56.0376H110.553V48.372H108.021V47.3594H114.251V48.372Z" fill="#3F404B"/>
+      <path d="M121.951 48.3603H119.984V47.3594H125.083V48.3603H123.117V55.0249H125.083V56.0376H119.984V55.0249H121.951V48.3603Z" fill="#3F404B"/>
+      <path d="M137.02 51.648C137.02 52.4251 136.926 53.0964 136.749 53.6616C136.573 54.2268 136.325 54.6977 136.019 55.0628C135.713 55.4278 135.348 55.7104 134.936 55.887C134.524 56.0636 134.088 56.1579 133.641 56.1579C133.087 56.1579 132.616 56.0636 132.204 55.8517C131.792 55.6515 131.462 55.3572 131.191 54.9804C130.92 54.6036 130.72 54.1325 130.591 53.5909C130.461 53.0492 130.391 52.4252 130.391 51.7422C130.391 50.9768 130.485 50.3056 130.661 49.7404C130.838 49.1752 131.085 48.7042 131.392 48.3392C131.698 47.9624 132.051 47.6916 132.463 47.515C132.875 47.3384 133.299 47.2441 133.758 47.2441C134.312 47.2441 134.783 47.3501 135.195 47.5503C135.595 47.7505 135.937 48.0448 136.207 48.4216C136.478 48.7984 136.679 49.2577 136.808 49.7993C136.938 50.341 137.008 50.9533 137.008 51.6362L137.02 51.648ZM135.819 51.7304C135.819 51.2241 135.784 50.7531 135.701 50.3292C135.631 49.9053 135.501 49.5403 135.336 49.2341C135.171 48.928 134.948 48.6925 134.677 48.5276C134.406 48.3628 134.088 48.2804 133.711 48.2804C133.334 48.2804 133.028 48.3745 132.769 48.5512C132.51 48.7278 132.286 48.9751 132.122 49.2812C131.957 49.5874 131.827 49.9524 131.745 50.3645C131.662 50.7766 131.615 51.2123 131.615 51.6833C131.615 52.2014 131.651 52.6607 131.733 53.0846C131.815 53.5085 131.933 53.8735 132.098 54.1679C132.263 54.474 132.487 54.7095 132.746 54.8744C133.016 55.0392 133.334 55.1216 133.699 55.1216C134.064 55.1216 134.382 55.0274 134.641 54.8508C134.901 54.6742 135.124 54.4269 135.301 54.1208C135.477 53.8146 135.595 53.4496 135.678 53.0374C135.76 52.6253 135.807 52.1896 135.807 51.7186L135.819 51.7304Z" fill="#3F404B"/>
+      <path d="M148.446 56.0376H146.927L144.442 50.6328L143.724 48.8901V56.0376H142.641V47.3594H144.136L146.503 52.4815L147.362 54.4715V47.3594H148.446V56.0376Z" fill="#3F404B"/>
+      <path d="M69.8694 16.9986L73.4254 25.5944H66.2897L64.9238 28.8678H74.9562L79.101 38.7H83.3635L71.9653 11.9824L69.8694 16.9986Z" fill="#3F404B"/>
+      <path d="M30.3261 7.48047H17.668V38.6961H21.7068V10.7539H29.4548C37.0968 10.7539 40.9119 14.5808 40.9119 22.2346C40.9119 31.0188 37.085 35.4226 29.4548 35.4226H24.9803V38.6961H30.3261C40.0759 38.6961 44.9507 33.2089 44.9507 22.2346C44.9507 12.4024 40.0759 7.48047 30.3261 7.48047Z" fill="#3F404B"/>
+      <path d="M94.7617 7.48047V38.6961H98.518V13.7683L117.335 38.6961H121.303V37.2478L98.7417 7.48047H94.7617Z" fill="#3F404B"/>
+      <path d="M117.541 26.8975L121.297 31.7724V7.48047H117.541V26.8975Z" fill="#3F404B"/>
+      <path d="M148.182 7.48047H144.367V38.6961H148.182V7.48047Z" fill="#3F404B"/>
+      <path d="M156.975 7.48047V11.2956H168.538V38.6961H172.353V11.2956H183.928V7.48047H156.975Z" fill="#3F404B"/>
+      <path d="M0 46.1699V0H8.25432V3.65027H3.65031V42.5079H8.25432V46.1581L3.85046 46.1699H0Z" fill="url(#lg0)"/>
+      <path d="M191.734 42.5079H196.338V3.65027H191.734V0H196.456H200V46.1582H191.734V42.5079Z" fill="url(#lg1)"/>
+      <path d="M52.3281 38.6902H56.5083L70.0496 7.47461H65.575L52.3281 38.6902Z" fill="url(#lg2)"/>
+      <path d="M134.62 34.8672H130.805V38.6823H134.62V34.8672Z" fill="url(#lg3)"/>
+      <defs>
+        <linearGradient id="lg0" x1="4.13" y1="50.52" x2="4.13" y2="0.92" gradientUnits="userSpaceOnUse"><stop stop-color="#5046C7"/><stop offset="1" stop-color="#1ECDAA"/></linearGradient>
+        <linearGradient id="lg1" x1="195.86" y1="50.51" x2="195.86" y2="0.92" gradientUnits="userSpaceOnUse"><stop stop-color="#5046C7"/><stop offset="1" stop-color="#1ECDAA"/></linearGradient>
+        <linearGradient id="lg2" x1="61.19" y1="50.51" x2="61.19" y2="0.93" gradientUnits="userSpaceOnUse"><stop stop-color="#5046C7"/><stop offset="1" stop-color="#1ECDAA"/></linearGradient>
+        <linearGradient id="lg3" x1="132.71" y1="50.51" x2="132.71" y2="0.93" gradientUnits="userSpaceOnUse"><stop stop-color="#5046C7"/><stop offset="1" stop-color="#1ECDAA"/></linearGradient>
+      </defs>
+    </svg>
+
+    <div id="heroIntro">
+      <div class="tag">DAN.IT Education · Товариство Червоного Хреста України · онлайн</div>
+      <h1>Комплексний курс <span class="accent">Microsoft Excel</span></h1>
+      <p class="lead">Перед стартом навчання просимо пройти короткий тест. Він допоможе сформувати групи з учасників близького рівня, щоб темп і завдання підходили саме вам.</p>
+      <div class="facts">
+        <div class="fact"><b>12</b><span>онлайн-занять по 2 години</span></div>
+        <div class="fact"><b>24 год</b><span>загальна тривалість</span></div>
+        <div class="fact"><b>70–80%</b><span>практики</span></div>
+        <div class="fact"><b>✓</b><span>сертифікат DAN.IT</span></div>
+      </div>
+      <a class="btn" href="#start">Пройти тест ↓</a>
+    </div>
+
+    <div id="heroTest" hidden>
+      <div class="tag">Тест рівня · Microsoft Excel</div>
+      <h1 id="testTitle">Самооцінка</h1>
+      <p class="lead" id="testLead"></p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- ================= СТОРІНКА 1: ПРОГРАМА + РЕЄСТРАЦІЯ ================= -->
+    <div id="introView">
+
+      <section class="section">
+        <h2>Про курс</h2>
+        <p class="section-desc">Курс охоплює повний цикл роботи з даними в Excel: від введення й формул до зведених таблиць, аналізу та автоматизації. Кожне заняття — пояснення, демонстрація, практика на уроці та домашнє завдання.</p>
+        <div class="two-col">
+          <div class="card">
+            <h3>Формат</h3>
+            <ul>
+              <li>онлайн у прямому ефірі в Microsoft Teams</li>
+              <li>не більше 2 занять на тиждень</li>
+              <li>групи формуються за рівнем підготовки</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Ви отримаєте</h3>
+            <ul>
+              <li>презентації, шаблони та практичні файли</li>
+              <li>записи занять і пожиттєвий доступ до LMS DAN.IT</li>
+              <li>перевірку домашніх завдань і підсумкової роботи, менторську підтримку</li>
+              <li>сертифікат про завершення курсу</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Програма курсу</h2>
+        <p class="section-desc">12 занять по 2 астрономічні години. Підсумкова робота — аналітичний звіт із формулами, зведеними таблицями, діаграмами й елементами автоматизації.</p>
+        <div class="lessons" id="lessons"></div>
+      </section>
+
+      <section class="section">
+        <h2>Як проходить тест</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>Що на вас чекає</h3>
+            <ul>
+              <li>4 частини: самооцінка і 3 блоки питань від простих до складних</li>
+              <li>33 питання з вибором однієї відповіді</li>
+              <li>близько 30 хвилин</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Важливо</h3>
+            <ul>
+              <li>це не іспит — результат впливає лише на вибір групи</li>
+              <li>не відкривайте Excel і не шукайте відповіді в інтернеті</li>
+              <li>не знаєте відповіді — оберіть «Не знаю», це краще за вгадування</li>
+              <li>у формулах роздільник аргументів — крапка з комою (;)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="submit-card" id="start">
+        <h2>Розпочати тест</h2>
+        <p>Вкажіть прізвище та імʼя так, як під час реєстрації на навчання, — за ними ми додамо вас до групи.</p>
+        <div class="fields">
+          <div id="fLast">
+            <label class="field" for="lastName">Прізвище<span class="req">*</span></label>
+            <input type="text" id="lastName" autocomplete="family-name" placeholder="Наприклад, Шевченко">
+            <div class="err-msg">Вкажіть прізвище</div>
+          </div>
+          <div id="fFirst">
+            <label class="field" for="firstName">Імʼя<span class="req">*</span></label>
+            <input type="text" id="firstName" autocomplete="given-name" placeholder="Наприклад, Олена">
+            <div class="err-msg">Вкажіть імʼя</div>
+          </div>
+        </div>
+        <div class="nav"><button class="btn" id="startBtn" type="button">Почати тест →</button></div>
+        <div class="form-error" id="introError"></div>
+      </section>
+    </div>
+
+    <!-- ================= ТЕСТ ================= -->
+    <form id="testView" hidden novalidate>
+      <div id="steps"></div>
+      <div class="section" style="padding-top:28px;padding-bottom:28px">
+        <div class="nav" style="margin-top:0">
+          <button class="btn ghost" type="button" id="backBtn">← Назад</button>
+          <button class="btn" type="button" id="nextBtn">Далі →</button>
+          <button class="btn" type="submit" id="submitBtn" hidden>Надіслати відповіді</button>
+          <span class="step-info" id="stepInfo"></span>
+        </div>
+        <div class="form-error" id="formError"></div>
+      </div>
+    </form>
+
+    <!-- ================= ГОТОВО ================= -->
+    <div id="doneView" class="done" hidden>
+      <section class="section">
+        <h2>Дякуємо, <span class="accent" id="doneName"></span>!</h2>
+        <p class="section-desc" style="font-size:18px">Ваші відповіді надіслано. За результатами тесту ми сформуємо групи й надішлемо вам розклад і посилання на перше заняття.</p>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<script>
+/* =========================================================
+   ПРОГРАМА КУРСУ
+   ========================================================= */
+const LESSONS = [
+  ['Основи роботи в Microsoft Excel', 'Інтерфейс, структура книги, типи даних, робота з аркушами й діапазонами'],
+  ['Формули та посилання', 'Порядок операцій, відносні, абсолютні та змішані посилання, виправлення помилок'],
+  ['Математичні та статистичні функції', 'SUM, AVERAGE, MIN, MAX, COUNT, COUNTA, ROUND, SUBTOTAL'],
+  ['Логічні функції', 'IF, IFS, AND, OR, вкладені формули, IFERROR'],
+  ['Текстові функції та робота з датами', 'LEFT, RIGHT, MID, CONCAT, TEXTJOIN, TRIM, SUBSTITUTE, TODAY, DATE'],
+  ['Пошук і зіставлення даних', 'VLOOKUP, XLOOKUP, INDEX, MATCH, пошук за кількома критеріями'],
+  ['Сортування, фільтрація та перевірка даних', 'Фільтри, групування, проміжні підсумки, перевірка введення'],
+  ['Умовне форматування та захист', 'Правила, теплові карти, дублікати, захист аркушів і книг'],
+  ['Зведені таблиці', 'Створення, робота з полями, групування, розрахунки'],
+  ['Інтерактивні зведені звіти', 'Зрізи, часові шкали, зведені діаграми, динамічний звіт'],
+  ['Аналіз і візуалізація даних', 'Комбіновані діаграми, спарклайни, What-if Analysis, підбір параметра, сценарії'],
+  ['Power Query, макроси та автоматизація', 'Імпорт і очищення даних, обʼєднання таблиць, Macro Recorder']
+];
+document.getElementById('lessons').innerHTML = LESSONS.map((l, i) =>
+  '<div class="lesson"><div class="no">' + (i + 1) + '</div><div><b>' + l[0] + '</b><span>' + l[1] + '</span></div></div>'
+).join('');
+
+/* =========================================================
+   ПИТАННЯ ТЕСТУ
+   id — назва колонки в Google Таблиці; o — варіанти з літерою-ключем.
+   Ключ правильних відповідей зберігається лише в Apps Script.
+   ========================================================= */
+const STEPS = [
+  { title: 'Самооцінка', lead: 'Розкажіть коротко про свій досвід. Ці відповіді не оцінюються.', items: [
+    { id: 'S1', type: 'radio', t: 'Як часто ви працюєте в Excel?', o: [
+      ['1', 'щодня'], ['2', 'кілька разів на тиждень'], ['3', 'кілька разів на місяць'], ['4', 'майже не працюю'] ] },
+    { id: 'S2', type: 'check', t: 'Які задачі ви зазвичай виконуєте в Excel?', hint: 'Можна обрати кілька варіантів', o: [
+      ['1', 'вношу та редагую дані в готових таблицях'], ['2', 'роблю прості розрахунки (суми, середні значення)'],
+      ['3', 'готую звіти з фільтрами, формулами, діаграмами'], ['4', 'будую зведені таблиці, зіставляю дані з різних таблиць'],
+      ['5', 'автоматизую обробку даних (Power Query, макроси)'] ] },
+    { id: 'S3', type: 'check', t: 'Що з переліченого ви самостійно використовували хоча б раз?', hint: 'Можна обрати кілька варіантів', o: [
+      ['1', 'функція SUM / автосума'], ['2', 'функція IF'], ['3', 'VLOOKUP або XLOOKUP'], ['4', 'умовне форматування'],
+      ['5', 'зведені таблиці'], ['6', 'Power Query'], ['7', 'макроси'], ['0', 'нічого з переліченого'] ] }
+  ]},
+  { title: 'Частина 1. Основи', lead: 'Інтерфейс, введення даних, прості формули й функції.', items: [
+    { id: 'A1', t: 'Як називається клітинка на перетині стовпця C і рядка 5?', o: [['а','5C'],['б','C5'],['в','R5C'],['г','C:5']] },
+    { id: 'A2', t: 'Що зʼявиться в клітинці, якщо ввести в неї <code>2+3</code> без знака «=» і натиснути Enter?', o: [
+      ['а','5'],['б','Помилка #NAME?'],['в','Текст «2+3»'],['г','Excel сам додасть «=» і покаже 5']] },
+    { id: 'A3', t: 'У клітинці A1 число 10, у B1 — число 4. Який результат дасть формула <code>=A1-B1*2</code>?', o: [
+      ['а','12'],['б','2'],['в','28'],['г','6']] },
+    { id: 'A4', t: 'У C2 є формула, а в сусідньому стовпці B дані заповнено до рядка 500. Що станеться після подвійного клацання по маркеру автозаповнення клітинки C2?', o: [
+      ['а','Формула скопіюється лише в C3'],['б','Відкриється режим редагування формули'],
+      ['в','Формула скопіюється до кінця аркуша (1 048 576 рядків)'],['г','Формула скопіюється до C500']] },
+    { id: 'A5', t: 'У клітинках A1:A4 записано: 10, 20, порожня клітинка, 30. Що поверне формула <code>=AVERAGE(A1:A4)</code>?', o: [
+      ['а','15'],['б','20'],['в','#DIV/0!'],['г','30']] },
+    { id: 'A6', t: 'Замість числа клітинка показує ######. Що це найімовірніше означає?', o: [
+      ['а','Стовпець завузький, щоб показати значення'],['б','У формулі помилка'],
+      ['в','Клітинка захищена паролем'],['г','У клітинці текст, а не число']] },
+    { id: 'A7', t: 'Формула <code>=B2-A2</code> має порахувати кількість днів між двома датами, але повертає #VALUE!. Яка причина найімовірніша?', o: [
+      ['а','Дата в B2 раніша, ніж у A2'],['б','Клітинка з формулою має формат «Дата»'],
+      ['в','Одна з дат збережена як текст'],['г','Дати належать до різних років']] },
+    { id: 'A8', t: 'Що рахує формула <code>=COUNT(A1:A10)</code>?', o: [
+      ['а','Суму чисел у діапазоні'],['б','Кількість усіх непорожніх клітинок'],
+      ['в','Кількість порожніх клітинок'],['г','Кількість клітинок, що містять числа']] },
+    { id: 'A9', t: 'Як зробити, щоб рядок 1 із заголовками залишався видимим під час прокручування таблиці вниз?', o: [
+      ['а','Розмітка сторінки → Друкувати заголовки'],['б','Вигляд → Закріпити області → Закріпити верхній рядок'],
+      ['в','Рецензування → Захистити аркуш'],['г','Основне → Формат → Висота рядка → збільшити']] },
+    { id: 'A10', t: 'Який результат дасть формула <code>=ROUND(3,14159;2)</code>?', o: [
+      ['а','3,14'],['б','3,15'],['в','3'],['г','3,1416']] }
+  ]},
+  { title: 'Частина 2. Формули та робота з даними', lead: 'Посилання, логічні й текстові функції, дати, пошук, перевірка та форматування.', items: [
+    { id: 'B1', t: 'У C2 формула <code>=B2*$E$1</code>. Її скопіювали в C3. Якою стане формула в C3?', o: [
+      ['а','<code>=B3*$E$2</code>'],['б','<code>=B2*$E$1</code>'],['в','<code>=C3*$F$1</code>'],['г','<code>=B3*$E$1</code>']] },
+    { id: 'B2', t: 'Формулу <code>=A$1</code> скопіювали на одну клітинку вниз і на одну праворуч. Якою вона стане?', o: [
+      ['а','<code>=A$2</code>'],['б','<code>=B$2</code>'],['в','<code>=B$1</code>'],['г','<code>=A$1</code>']] },
+    { id: 'B3', t: 'У B2 число 1000. Що поверне формула <code>=IF(B2>=1000;"Великий";"Малий")</code>?', o: [
+      ['а','Великий'],['б','Малий'],['в','TRUE'],['г','Помилку #VALUE!']] },
+    { id: 'B4', t: 'Потрібно отримати «Так», лише коли сума в A2 більша за 0 і водночас у B2 записано «Оплачено». Яка формула правильна?', o: [
+      ['а','<code>=IF(OR(A2>0;B2="Оплачено");"Так";"Ні")</code>'],
+      ['б','<code>=IF(AND(A2>0;B2="Оплачено");"Так";"Ні")</code>'],
+      ['в','<code>=IF(A2>0;IF(B2="Оплачено";"Так";"Ні");"Так")</code>'],
+      ['г','<code>=IF(AND(A2>0;B2="Оплачено");"Ні";"Так")</code>']] },
+    { id: 'B5', t: 'У списку ПІБ є зайві пробіли на початку, в кінці та між словами. Яка функція їх прибере?', o: [
+      ['а','CLEAN'],['б','SUBSTITUTE'],['в','TRIM'],['г','PROPER']] },
+    { id: 'B6', t: 'У A2 дата 01.03.2026, у B2 — 31.03.2026. Що покаже формула <code>=B2-A2</code> у клітинці з форматом «Загальний»?', o: [
+      ['а','31'],['б','29'],['в','30.01.1900'],['г','30']] },
+    { id: 'B7', t: 'Що означає останній аргумент FALSE (або 0) у формулі <code>=VLOOKUP(A2;Довідник!A:C;3;FALSE)</code>?', o: [
+      ['а','Шукати лише точний збіг'],['б','Шукати найближче менше значення'],
+      ['в','Не враховувати регістр літер'],['г','Повернути порожнє значення, якщо нічого не знайдено']] },
+    { id: 'B8', t: 'VLOOKUP повертає #N/A для кодів, яких немає в довіднику. Яка формула покаже замість помилки 0, а для знайдених кодів — правильне значення?', o: [
+      ['а','<code>=IF(ISERROR(VLOOKUP(A2;Довідник!A:C;3;FALSE));0)</code>'],
+      ['б','<code>=IFERROR(VLOOKUP(A2;Довідник!A:C;3;FALSE);0)</code>'],
+      ['в','<code>=VLOOKUP(A2;Довідник!A:C;3;TRUE)</code>'],
+      ['г','<code>=IFERROR(0;VLOOKUP(A2;Довідник!A:C;3;FALSE))</code>']] },
+    { id: 'B9', t: 'Потрібно, щоб у стовпці «Регіон» можна було обрати значення лише з готового списку. Який інструмент для цього?', o: [
+      ['а','Фільтр'],['б','Умовне форматування'],['в','Захист аркуша'],['г','Перевірка даних (Data Validation)']] },
+    { id: 'B10', t: 'Потрібно підсвітити кольором номери договорів, що повторюються, не змінюючи самих даних. Який шлях правильний?', o: [
+      ['а','Дані → Видалити дублікати'],['б','Умовне форматування → Правила виділення клітинок → Повторювані значення'],
+      ['в','Дані → Фільтр → Фільтр за кольором'],['г','Основне → Знайти й виділити → Виділити групу клітинок → Константи']] }
+  ]},
+  { title: 'Частина 3. Аналіз і автоматизація', lead: 'Пошук даних, умовні підсумки, зведені таблиці, аналіз «що-якщо», Power Query і макроси.', items: [
+    { id: 'C1', t: 'Яку задачу XLOOKUP розвʼязує однією формулою, а звичайний VLOOKUP — ні (без допоміжних стовпців)?', o: [
+      ['а','Пошук за точним збігом'],['б','Повернення значення зі стовпця, розташованого ліворуч від стовпця пошуку'],
+      ['в','Пошук у таблиці на іншому аркуші'],['г','Пошук текстових значень']] },
+    { id: 'C2', t: 'Що поверне формула <code>=INDEX(C2:C100;MATCH(F1;A2:A100;0))</code>?', o: [
+      ['а','Номер рядка, у якому в стовпці A знайдено F1'],['б','Суму значень стовпця C, де в стовпці A є F1'],
+      ['в','Кількість збігів F1 у стовпці A'],['г','Значення зі стовпця C у тому рядку, де в стовпці A знайдено значення F1']] },
+    { id: 'C3', t: 'У таблиці стовпець B — «Регіон», C — «Категорія», D — «Сума». Яка формула порахує суму витрат регіону «Київ» за категорією «Пальне»?', o: [
+      ['а','<code>=SUMIFS(D:D;B:B;"Київ";C:C;"Пальне")</code>'],
+      ['б','<code>=SUMIF(B:B;"Київ";C:C;"Пальне";D:D)</code>'],
+      ['в','<code>=SUMIFS(B:B;"Київ";C:C;"Пальне";D:D)</code>'],
+      ['г','<code>=SUM(IF(B:B="Київ";D:D))</code>']] },
+    { id: 'C4', t: 'У зведеній таблиці в рядках відображається кожна окрема дата, а потрібні підсумки по місяцях. Як зробити це найшвидше, не змінюючи вихідних даних?', o: [
+      ['а','Перетягнути поле дати в область «Фільтри»'],['б','Змінити формат дат у зведеній таблиці на «ММММ»'],
+      ['в','Клацнути правою кнопкою на дату у зведеній таблиці → Групувати → Місяці'],['г','Перетягнути поле дати в область «Стовпці»']] },
+    { id: 'C5', t: 'Зведену таблицю побудовано на звичайному діапазоні A1:F200. Під ним додали нові рядки. Що гарантує, що вони потраплятимуть у зведену таблицю й надалі?', o: [
+      ['а','Натискати «Оновити» — зведена таблиця сама розширює діапазон'],
+      ['б','Оформити вихідні дані як Таблицю (Ctrl+T), вказати її джерелом і натискати «Оновити»'],
+      ['в','Увімкнути автоматичне обчислення формул'],['г','Зберегти файл і відкрити його заново']] },
+    { id: 'C6', t: 'У книзі дві зведені таблиці на одному джерелі даних. Як зробити, щоб вибір регіону одразу фільтрував обидві?', o: [
+      ['а','Додати зріз за регіоном і в «Підключення до звітів» позначити обидві зведені таблиці'],
+      ['б','Додати поле «Регіон» у фільтр кожної таблиці — вони синхронізуються автоматично'],
+      ['в','Виділити обидві таблиці з Ctrl і застосувати «Групувати»'],['г','Застосувати автофільтр до вихідних даних']] },
+    { id: 'C7', t: 'Є модель: прибуток = кількість × ціна − витрати. Потрібно знайти точну ціну, за якої прибуток дорівнюватиме нулю. Який інструмент аналізу «що-якщо» для цього призначений?', o: [
+      ['а','Диспетчер сценаріїв'],['б','Таблиця даних'],['в','Аркуш прогнозу'],['г','Підбір параметра (Goal Seek)']] },
+    { id: 'C8', t: 'Щомісяця з регіонів надходить 12 файлів однакової структури. Потрібно, щоб для оновлення зведеної таблиці достатньо було покласти нові файли в папку й натиснути «Оновити». Що використати?', o: [
+      ['а','Дані → Консолідація з посиланнями на кожен файл'],['б','Формули з посиланнями на інші книги'],
+      ['в','Power Query: Отримати дані → З папки → Обʼєднати'],['г','Зведену таблицю з кількох діапазонів консолідації']] },
+    { id: 'C9', t: 'Таблицю відфільтровано за регіоном, а кілька рядків додатково приховано вручну. Що враховує <code>=SUBTOTAL(9;D2:D500)</code>?', o: [
+      ['а','Усі видимі рядки та рядки, приховані вручну, але не відфільтровані'],['б','Лише видимі рядки'],
+      ['в','Усі рядки діапазону, як SUM'],['г','Лише рядки, приховані фільтром']] },
+    { id: 'C10', t: 'Ви записали макрос за допомогою Macro Recorder у звичайній книзі. У якому форматі треба зберегти файл, щоб макрос не зник?', o: [
+      ['а','.xlsx'],['б','.xlsm'],['в','.xltx'],['г','.csv']] }
+  ]}
+];
+
+/* ---------- рендер ---------- */
+function shuffle(a) { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; }
+
+let qNo = 0;
+const stepsEl = document.getElementById('steps');
+STEPS.forEach((s, si) => {
+  const sec = document.createElement('section');
+  sec.className = 'section'; sec.dataset.step = si; sec.hidden = si !== 0;
+  let html = '<div class="section-head"><span class="section-num">' + (si + 1) + ' / ' + STEPS.length + '</span><h2>' + s.title + '</h2></div>' +
+             '<p class="section-desc">' + s.lead + '</p>';
+  s.items.forEach(q => {
+    qNo++;
+    const type = q.type === 'check' ? 'checkbox' : 'radio';
+    // варіанти тестових питань перемішуються, «Не знаю» завжди останній
+    const opts = q.type ? q.o : shuffle(q.o).concat([['?', 'Не знаю']]);
+    html += '<div class="q" data-id="' + q.id + '" data-type="' + type + '">' +
+      '<p class="q-title"><span class="n">' + qNo + '.</span>' + q.t + '<span class="req">*</span></p>' +
+      (q.hint ? '<p class="q-hint">' + q.hint + '</p>' : '') +
+      '<div class="opts">' + opts.map(o =>
+        '<label class="opt' + (o[0] === '?' ? ' idk' : '') + '"><input type="' + type + '" name="' + q.id + '" value="' + o[0] + '"><div class="opt-body">' + o[1] + '</div></label>'
+      ).join('') + '</div><div class="err-msg">Оберіть варіант відповіді</div></div>';
+  });
+  sec.innerHTML = html;
+  stepsEl.appendChild(sec);
+});
+const TOTAL_Q = qNo;
+
+/* «нічого з переліченого» знімає інші позначки і навпаки */
+stepsEl.addEventListener('change', e => {
+  const inp = e.target;
+  if (inp.name === 'S3' && inp.checked) {
+    stepsEl.querySelectorAll('input[name=S3]').forEach(x => {
+      if (inp.value === '0' ? x.value !== '0' : x.value === '0') x.checked = false;
+    });
+  }
+  const q = inp.closest('.q'); if (q) q.classList.remove('invalid');
+  updateProgress();
+});
+
+/* ---------- навігація ---------- */
+let step = 0;
+const $ = id => document.getElementById(id);
+
+function updateProgress() {
+  const answered = [...stepsEl.querySelectorAll('.q')].filter(q => q.querySelector('input:checked')).length;
+  $('bar').style.width = (answered / TOTAL_Q * 100) + '%';
+}
+
+function renderStep() {
+  stepsEl.querySelectorAll('[data-step]').forEach(s => s.hidden = Number(s.dataset.step) !== step);
+  $('testTitle').textContent = STEPS[step].title;
+  $('testLead').textContent = STEPS[step].lead;
+  $('backBtn').hidden = step === 0;
+  $('nextBtn').hidden = step === STEPS.length - 1;
+  $('submitBtn').hidden = step !== STEPS.length - 1;
+  $('stepInfo').textContent = 'Крок ' + (step + 1) + ' з ' + STEPS.length;
+  $('formError').style.display = 'none';
+  window.scrollTo({ top: 0 });
+}
+
+function validateStep(i) {
+  let first = null;
+  stepsEl.querySelectorAll('[data-step="' + i + '"] .q').forEach(q => {
+    const ok = !!q.querySelector('input:checked');
+    q.classList.toggle('invalid', !ok);
+    if (!ok && !first) first = q;
+  });
+  if (first) {
+    first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('formError').textContent = 'Дайте відповідь на всі питання — пропущені підсвічені червоним. Якщо не знаєте відповіді, оберіть «Не знаю».';
+    $('formError').style.display = 'block';
+  }
+  return !first;
+}
+
+$('nextBtn').addEventListener('click', () => { if (validateStep(step)) { step++; renderStep(); } });
+$('backBtn').addEventListener('click', () => { step--; renderStep(); });
+
+function cleanName(v) { return v.trim().replace(/\s+/g, ' '); }
+
+$('startBtn').addEventListener('click', () => {
+  const ln = cleanName($('lastName').value), fn = cleanName($('firstName').value);
+  $('fLast').classList.toggle('invalid', !ln);
+  $('fFirst').classList.toggle('invalid', !fn);
+  if (!ln || !fn) return;
+  $('introView').hidden = true; $('heroIntro').hidden = true;
+  $('testView').hidden = false; $('heroTest').hidden = false;
+  document.querySelector('.progress').hidden = false;
+  step = 0; renderStep(); updateProgress();
+});
+['lastName', 'firstName'].forEach(id => $(id).addEventListener('input', e => e.target.parentElement.classList.remove('invalid')));
+
+/* ---------- відправка в Google Таблицю ---------- */
+function collect() {
+  const a = {};
+  stepsEl.querySelectorAll('.q').forEach(q => {
+    const vals = [...q.querySelectorAll('input:checked')].map(x => x.value);
+    a[q.dataset.id] = q.dataset.type === 'checkbox' ? vals.join(',') : (vals[0] || '');
+  });
+  return a;
+}
+
+$('testView').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validateStep(step)) return;
+  const cfg = window.SURVEY_CONFIG, btn = $('submitBtn'), err = $('formError');
+  if (!cfg.endpoint || cfg.endpoint.indexOf('PASTE_') === 0) {
+    err.textContent = 'Тест ще не підключено до Google Таблиці (не вказано адресу Apps Script).';
+    err.style.display = 'block'; return;
+  }
+  btn.disabled = true; btn.textContent = 'Надсилаємо…';
+  const payload = {
+    formId: cfg.formId,
+    submittedAt: new Date().toISOString(),
+    lastName: cleanName($('lastName').value),
+    firstName: cleanName($('firstName').value),
+    answers: collect()
+  };
+  try {
+    // text/plain → «простий» запит без CORS-preflight, який Apps Script приймає
+    await fetch(cfg.endpoint, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    $('doneName').textContent = payload.firstName;
+    $('testView').hidden = true; $('heroTest').hidden = true;
+    document.querySelector('.progress').hidden = true;
+    $('doneView').hidden = false;
+    window.scrollTo({ top: 0 });
+  } catch (ex) {
+    btn.disabled = false; btn.textContent = 'Надіслати відповіді';
+    err.textContent = 'Не вдалося надіслати. Перевірте інтернет і спробуйте ще раз.';
+    err.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
